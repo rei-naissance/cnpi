@@ -13,16 +13,16 @@ import {
 import { LinkIcon, LogOut } from "lucide-react"
 
 
-
 const Header = () => {
 
   const navigate = useNavigate()
-  const user = true // Replace with actual user authentication logic
+  const user = false // Replace with actual user authentication logic
 
   return (
-    <nav className= "flex items-center justify-between py-4">
-      <Link to="/">
+    <nav className= "flex items-center justify-between py-6">
+      <Link to="/" className="flex items-center gap-4">
         <img src="./cnpi-logo.png" className="h-14" alt="CNPI Logo" />
+        <h1 className="text-4xl font-bold text-white" style={{ fontFamily: "'Rubik', sans-serif" }}>CNPI</h1>
       </Link>
 
       <div>
@@ -31,7 +31,7 @@ const Header = () => {
           ) : (
             <DropdownMenu>
               <DropdownMenuTrigger className="w-10 overflow-hidden rounded-full">
-                <Avatar>
+                <Avatar className="h-10 w-10 cursor-pointer">
                   <AvatarImage src="https://github.com/shadcn.png" />
                   <AvatarFallback>CN</AvatarFallback>
                 </Avatar>
