@@ -10,8 +10,10 @@ import { Input } from "./ui/input"
 import { Button } from "./ui/button"
 import { BeatLoader } from "react-spinners"
 import Error from "./error"
-import { useState } from "react"
+import { useEffect, useState } from "react"
 import * as Yup from "yup"
+import useFetch from "@/hooks/use-fetch"
+import { login } from "@/utils/apiAuth"
 
 
 const Login = () => {
@@ -20,6 +22,15 @@ const Login = () => {
         email: "",
         password: ""
     })
+
+    const {data, error, loading, func: fnLogin} = useFetch(login, formData)
+
+    useEffect(() => {
+        console.log(data)
+        // if (error) {
+        //     setErrors({general: error.message})
+        // }
+    }, [data, error])
 
     const handleLogin = async () => {
         setErrors({})
@@ -34,6 +45,7 @@ const Login = () => {
             })
             
         await schema.validate(formData, { abortEarly: false })
+        await fnLogin()
         } catch (error: any) {
             const newErrors: {[key: string]: string} = {}
 
@@ -60,20 +72,20 @@ const Login = () => {
                 <CardTitle>Login</CardTitle>
                 <CardDescription>to your account if you already have one.</CardDescription>
             </CardHeader>
-            <Error message={"insert error"} />
+            {error && <Error message={error.message} />}
             <CardContent className="space-y-2">
                 <div className="space-y-1">
-                    <Input onChange={handleInputChange} type="email" placeholder="Email" className="w-full" />
+                    <Input onChange={handleInputChange} name= "email" type="email" placeholder="Email" className="w-full" />
                     {errors.email && <Error message={errors.email} />}
                 </div>
                 <div className="space-y-1">
-                    <Input onChange={handleInputChange} type="email" placeholder="Email" className="w-full" />
+                    <Input onChange={handleInputChange} name="password" type="password" placeholder="Password" className="w-full" />
                     {errors.password && <Error message={errors.password} />}
                 </div>
             </CardContent>
             <CardFooter>
-                <Button>
-                    {true ? <BeatLoader size={10} /> : "Login"}
+                <Button type="submit" onClick={handleLogin}>
+                    {loading ? <BeatLoader size={10} /> : "Login"}
                 </Button>
             </CardFooter>
             </Card>
