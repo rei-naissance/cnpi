@@ -14,6 +14,7 @@ import { useEffect, useState } from "react"
 import * as Yup from "yup"
 import useFetch from "@/hooks/use-fetch"
 import { login } from "@/utils/apiAuth"
+import { useNavigate, useSearchParams } from "react-router-dom"
 
 
 const Login = () => {
@@ -22,14 +23,18 @@ const Login = () => {
         email: "",
         password: ""
     })
+    
+    const navigate = useNavigate()
+    let [searchParams, ] = useSearchParams()
+    const longLink = searchParams.get("createNew")
 
     const {data, error, loading, func: fnLogin} = useFetch(login, formData)
 
     useEffect(() => {
-        console.log(data)
-        // if (error) {
-        //     setErrors({general: error.message})
-        // }
+        // console.log(data)
+        if (error === null && data) {
+            navigate(`/dashboard?createNew=${longLink ? `createNew=${longLink}` : ""}`)
+        }
     }, [data, error])
 
     const handleLogin = async () => {
