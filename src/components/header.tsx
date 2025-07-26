@@ -11,12 +11,14 @@ import {
   DropdownMenuTrigger,
 } from "../components/ui/dropdown-menu"
 import { LinkIcon, LogOut } from "lucide-react"
+import { urlState } from "@/context"
 
 
 const Header = () => {
 
   const navigate = useNavigate()
-  const user = false // Replace with actual user authentication logic
+  
+  const { user, fetchUser } = urlState()
 
   return (
     <nav className= "flex items-center justify-between py-6">
@@ -32,12 +34,12 @@ const Header = () => {
             <DropdownMenu>
               <DropdownMenuTrigger className="w-10 overflow-hidden rounded-full">
                 <Avatar className="h-10 w-10 cursor-pointer">
-                  <AvatarImage src="https://github.com/shadcn.png" />
-                  <AvatarFallback>CN</AvatarFallback>
+                  <AvatarImage src={user?.user_metadata?.profile_pic} />
+                  <AvatarFallback>{user?.user_metadata?.name?.split(" ").map((name: string) => name.charAt(0).toUpperCase()).join("")}</AvatarFallback>
                 </Avatar>
               </DropdownMenuTrigger>
               <DropdownMenuContent>
-                <DropdownMenuLabel>Reinaissance</DropdownMenuLabel>
+                <DropdownMenuLabel>{user?.user_metadata?.name}</DropdownMenuLabel>
                 <DropdownMenuSeparator />
                 <DropdownMenuItem>
                   <LinkIcon className="mr-2 h-4 w-4" />
