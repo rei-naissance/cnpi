@@ -1,21 +1,37 @@
-import { profile } from 'console'
 import supabase from './supabase'
+import { AuthResponse, User, Session } from '@supabase/supabase-js'
 
-export async function login({email, password} : any) {
-    const {data, error} = await supabase.auth.signInWithPassword({
-        email: email,
-        password: password
-    })
-    
-    if (error) {
-        throw new Error(error.message)
-    }
-    
-    return data
+// Type definitions for function parameters
+export interface LoginCredentials {
+    email: string
+    password: string
 }
 
-export async function getCurrentUser() {
-    const {data: session, error} = await supabase.auth.getSession()
+export interface SignupData {
+    name: string
+    email: string
+    password: string
+    profilePic: File 
+}
+
+// Get supabase URL from environment variables
+const supabaseUrl = import.meta.env.VITE_SUPABASE_URL as string
+
+export async function login({ email, password }: LoginCredentials): Promise<AuthResponse> {
+    const response = await supabase.auth.signInWithPassword({
+        email,
+        password
+    })
+    
+    if (response.error) {
+        throw new Error(response.error.message)
+    }
+    
+    return response
+}
+
+export async function getCurrentUser(): Promise<User | null> {
+    const { data: session, error } = await supabase.auth.getSession()
 
     if (!session.session) {
         return null
@@ -25,29 +41,29 @@ export async function getCurrentUser() {
         throw new Error(error.message)
     }
 
-    return session.session?.user
+    return session.session?.user || null
 }
 
-export async function signup({name, email, password, profile_pic}) {
+export async function signup({ name, email, password, profilePic }: SignupData): Promise<AuthResponse> {
     const fileName = `dp-${name.split(" ").join("-")}-${Math.random()}`
-    const {error: storageError} = await supabase.storage
-        .from("profile_pic")
-        .upload(fileName, profile_pic)
+    const { error: storageError } = await supabase.storage
+        .from("profile-pic")
+        .upload(fileName, profilePic)
 
     if (storageError) throw new Error(storageError.message)
 
-    const {data, error} = await supabase.auth.signUp({
+    const { data, error } = await supabase.auth.signUp({
         email,
         password,
         options: {
             data: {
                 name,
-                profile_pic:`${supabaseUrl}/storage/v1/object/public/profile_pic/${fileName}`,
+                profile_pic: `${supabaseUrl}/storage/v1/object/public/profile-pic/${fileName}`,
             },
         },
     })
 
     if (error) throw new Error(error.message)
 
-    return data
+    return { data, error }
 }

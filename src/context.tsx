@@ -1,10 +1,17 @@
-import { createContext, useContext, useEffect } from 'react'
+import { createContext, useContext, useEffect, ReactNode } from 'react'
 import { getCurrentUser } from './utils/apiAuth'
 import useFetch from './hooks/use-fetch'
 
-const urlContext = createContext()
+interface UrlContextType {
+    user: any
+    fetchUser: () => void
+    loading: boolean
+    isAuthenticated: boolean
+}
 
-const urlProvider = ({children}) => {
+const urlContext = createContext<UrlContextType | undefined>(undefined)
+
+const urlProvider = ({children}: {children: ReactNode}) => {
     const {data: user, loading, func: fetchUser} = useFetch(getCurrentUser)
 
     const isAuthenticated = user?.role === "authenticated"
@@ -20,6 +27,10 @@ const urlProvider = ({children}) => {
 }
 
 export const urlState = () => {
-    return useContext(urlContext)
+    const context = useContext(urlContext)
+    if (context === undefined) {
+        throw new Error('urlState must be used within a urlProvider')
+    }
+    return context
 }
 export default urlProvider

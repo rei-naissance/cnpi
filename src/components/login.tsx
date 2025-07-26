@@ -14,6 +14,7 @@ import { useEffect, useState } from "react"
 import * as Yup from "yup"
 import useFetch from "@/hooks/use-fetch"
 import { login } from "@/utils/apiAuth"
+import type { LoginCredentials } from "@/utils/apiAuth"
 import { useNavigate, useSearchParams } from "react-router-dom"
 import { urlState } from "@/context"
 
@@ -29,7 +30,10 @@ const Login = () => {
     let [searchParams, ] = useSearchParams()
     const longLink = searchParams.get("createNew")
 
-    const {data, error, loading, func: fnLogin} = useFetch(login, formData)
+    const {data, error, loading, func: fnLogin} = useFetch(
+        (options: any) => login(options as LoginCredentials),
+        formData
+    )
     const { fetchUser }= urlState() 
 
     useEffect(() => {
@@ -94,7 +98,7 @@ const Login = () => {
             </CardContent>
             <CardFooter>
                 <Button type="submit" onClick={handleLogin}>
-                    {loading ? <BeatLoader size={10} /> : "Login"}
+                    {loading ? <BeatLoader size={10} color="36d7b7"/> : "Login"}
                 </Button>
             </CardFooter>
             </Card>
