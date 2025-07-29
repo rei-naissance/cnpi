@@ -11,6 +11,7 @@ import { getUrls } from "@/utils/apiUrls"
 import { getClicks } from "@/utils/apiClicks"
 import { Url, Click } from "@/utils/interfaces"
 import LinkCard from "@/components/link-card"
+import CreateLink from "@/components/create-link"
 
 const Dashboard = () => {
 
@@ -96,7 +97,7 @@ const Dashboard = () => {
 
       <div className="flex justify-between">
         <h1 className="text-4xl font-extrabold">My Links</h1>
-        <Button>Generate New Link</Button>
+        <CreateLink />
       </div>
 
       <div className="relative">

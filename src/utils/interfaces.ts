@@ -18,4 +18,11 @@ export interface Click {
   country?: string
   // Add url_id if you need to reference which URL this click belongs to
   url_id?: number
-} 
+}
+
+export interface FormErrors {
+    title?: string;
+    longUrl?: string;
+    customUrl?: string;
+    message?: string;
+}
