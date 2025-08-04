@@ -15,6 +15,7 @@ import { urlState } from "@/context"
 import useFetch from "@/hooks/use-fetch"
 import { logout } from "@/utils/apiAuth"
 import { BarLoader } from "react-spinners"
+import cnpiLogo from "../../public/cnpi-logo-gold.png"
 
 const Header = () => {
 
@@ -26,7 +27,7 @@ const Header = () => {
     <>
     <nav className= "flex items-center justify-between py-6">
       <Link to="/" className="flex items-center gap-4">
-        <img src="./cnpi-logo.png" className="h-14" alt="CNPI Logo" />
+        <img src={cnpiLogo} className="h-14" alt="CNPI Logo" />
         <h1 className="text-4xl font-bold text-white" style={{ fontFamily: "'Rubik', sans-serif" }}>CNPI</h1>
       </Link>
 

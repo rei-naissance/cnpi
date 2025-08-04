@@ -1,9 +1,6 @@
 import supabase from "./supabase"
-import { UAParser } from "ua-parser-js"
 
 const supabaseUrl = import.meta.env.VITE_SUPABASE_URL
-
-const parser = new UAParser()
 
 export async function getUrls(user_id: string) {
     const {data, error} = await supabase
@@ -19,6 +16,22 @@ export async function getUrls(user_id: string) {
     return data || []
 }
 
+export async function getUrl ({id, user_id}: {id: string, user_id: string}) { 
+    const { data, error } = await supabase
+        .from("urls")
+        .select("*")
+        .eq("id", id)
+        .eq("user_id", user_id)
+        .single()
+
+    if (error) {
+        console.error(error.message);
+        throw new Error("Short url not found")
+    }
+
+    return data
+}
+
 export async function getLongUrl(id: string) {
     const {data, error} = await supabase
         .from("urls")
@@ -32,27 +45,6 @@ export async function getLongUrl(id: string) {
     }
 
     return data || null
-}
-
-export const storeClicks = async ({id, originalUrl }: {id: string, originalUrl: string}) => {
-    try {
-        const res = parser.getResult()
-        const device = res.device.type || "desktop"
-
-        const response = await fetch("https://ipapi.co/json")
-        const {city, country_name: country} = await response.json()
-
-        await supabase.from("clicks").insert({
-            url_id: id,
-            city: city,
-            country: country,
-            device: device,
-        })
-
-        window.location.href = originalUrl;
-    } catch (error) {
-        console.error("Error recording click:", error)
-    }
 }
 
 export async function createUrl(options: any, qrCode: File) {
@@ -87,7 +79,7 @@ export async function createUrl(options: any, qrCode: File) {
         return data || null
 }
 
-export async function deleteUrl(id: number) {
+export async function deleteUrl(id: string | number) {
     const {data, error} = await supabase  
         .from("urls")
         .delete()
