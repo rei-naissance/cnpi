@@ -21,8 +21,7 @@ export async function getClicksForUrl (url_id: string) {
     const { data, error } = await supabase
         .from("clicks")
         .select("*")
-        .eq("url_id", url_id)
-        .single()
+        .eq("url_id", url_id)       
 
     if (error) {
         console.error(error.message);
@@ -39,6 +38,8 @@ export const storeClicks = async ({id, originalUrl }: {id: string, originalUrl: 
 
         const response = await fetch("https://ipapi.co/json")
         const {city, country_name: country} = await response.json()
+
+        console.log(city)
 
         await supabase.from("clicks").insert({
             url_id: id,

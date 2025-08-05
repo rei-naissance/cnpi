@@ -1,5 +1,5 @@
 import { Button } from "@/components/ui/button"
-import { Card, CardAction, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card"
+import { Card, CardContent, CardFooter, CardHeader, CardTitle } from "@/components/ui/card"
 import { urlState } from "@/context"
 import useFetch from "@/hooks/use-fetch"
 import { getClicksForUrl } from "@/utils/apiClicks"
@@ -8,6 +8,8 @@ import { Copy, Download, LinkIcon, Trash } from "lucide-react"
 import { useEffect } from "react"
 import { useNavigate, useParams } from "react-router-dom"
 import { BarLoader, BeatLoader } from "react-spinners"
+import Location from "@/components/location-stats"
+import Device from "@/components/device-stats"
 
 const Link = () => {
   const {user} = urlState()
@@ -133,9 +135,9 @@ const Link = () => {
                 </Card>
                 
                 <CardTitle>Location Data</CardTitle>
-                {/* <Location stats={stats} /> */}
+                <Location stats={stats} />
                 <CardTitle>Device Statistics</CardTitle>
-                {/* <Device stats={stats} /> */}
+                <Device stats={stats} />
               </CardContent>
             ) : (
               <CardContent>
@@ -144,10 +146,6 @@ const Link = () => {
                   : "Loading statistics..."}
               </CardContent>
             )}
-
-            <CardFooter>
-              <p>Card Footer</p>
-            </CardFooter>
           </Card>
         </div>
     </>
