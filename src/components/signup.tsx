@@ -14,7 +14,7 @@ import { useEffect, useState } from "react"
 import * as Yup from "yup"
 import useFetch from "@/hooks/use-fetch"
 import { signup } from "@/utils/apiAuth"
-import type { LoginCredentials, SignupData } from "@/utils/apiAuth"
+import type { SignupData } from "@/utils/apiAuth"
 import { useNavigate, useSearchParams } from "react-router-dom"
 import { urlState } from "@/context"
 

@@ -1,5 +1,5 @@
 import supabase from './supabase'
-import { AuthResponse, User, Session } from '@supabase/supabase-js'
+import { AuthResponse, User } from '@supabase/supabase-js'
 
 // Type definitions for function parameters
 export interface LoginCredentials {

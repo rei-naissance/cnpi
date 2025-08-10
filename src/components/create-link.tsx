@@ -1,6 +1,6 @@
 import { urlState } from "@/context"
 import { useNavigate, useSearchParams } from "react-router-dom"
-import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle, DialogTrigger } from "./ui/dialog"
+import { Dialog, DialogContent, DialogFooter, DialogHeader, DialogTitle, DialogTrigger } from "./ui/dialog"
 import { Button } from "./ui/button"
 import { Input } from "./ui/input"
 import Error from "./error"
@@ -48,7 +48,6 @@ const CreateLink = () => {
     }
 
     const {
-        loading,
         error,
         data, 
         func: fnCreateUrl

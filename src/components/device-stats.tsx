@@ -45,7 +45,7 @@ export default function Device({ stats }: { stats: any[] }) {
                         ))}
                     </Pie>
                     <Tooltip 
-                        formatter={(value, name, props) => [
+                        formatter={(_, __, props) => [
                             props.payload.percent, 
                             props.payload.name
                         ]} 
