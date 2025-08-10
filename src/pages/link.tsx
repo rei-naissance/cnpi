@@ -72,11 +72,11 @@ const Link = () => {
         <div className="flex flex-col items-start gap-8  rounded-lg sm:w-2/5">
           <span className="text-6xl font-extrabold hover:underline cursor-pointer">{url?.title}</span>
           <a 
-            href={`https://cnpi.in/${link}`}
+            href={`https://cnpi.vercel.app/${link}`}
             target="_blank"
             className="text-3xl sm:text-4xl font-bold hover:underline cursor-pointer"
           >
-            https://cnpi.in/{link}
+            https://cnpi.vercel.app/{link}
           </a>
           <a
             href={url?.original_url}
@@ -93,7 +93,7 @@ const Link = () => {
           <div className="flex gap-2">
               <Button 
                   variant="ghost"
-                  onClick={() => navigator.clipboard.writeText(`https://cnpi.in/${url.short_url}`)}
+                  onClick={() => navigator.clipboard.writeText(`https://cnpi.vercel.app/${url.short_url}`)}
               >
                   <Copy />
               </Button>
