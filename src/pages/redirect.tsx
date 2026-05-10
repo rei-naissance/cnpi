@@ -1,48 +1,33 @@
-import useFetch from "@/hooks/use-fetch"
-import { getLongUrl } from "@/utils/apiUrls"
-import { storeClicks } from "@/utils/apiClicks"
-import { useEffect, useState } from "react"
-import { useParams } from "react-router-dom"
-import { BarLoader } from "react-spinners"
+import useFetch from '@/shared/hooks/use-fetch'
+import { getLongUrl } from '@/features/links/api'
+import { storeClicks } from '@/features/analytics/api'
+import { useEffect, useRef } from 'react'
+import { useParams } from 'react-router-dom'
+import { BarLoader } from 'react-spinners'
 
 const Redirect = () => {
-
-  const {id} = useParams()
-  const [isLoading, setIsLoading] = useState(false)
-  const {loading, data, func} = useFetch(
-   async (_, id: string) => getLongUrl(id)
-  )
-
-  // const {
-  //   loading: loadingStats,
-  //   func: fnStats
-  // } = useFetch(
-  //   async (options: any) => storeClicks(options)
-  // )
+  const { id } = useParams<{ id: string }>()
+  const tracked = useRef(false)
+  const { loading, data, func } = useFetch(getLongUrl)
 
   useEffect(() => {
-    func(id as string)
+    if (id) func(id)
   }, [id])
 
   useEffect(() => {
-    if (!loading && data && !isLoading) {
-      // fnStats()
-      setIsLoading(true)
-      storeClicks({id: data.id, originalUrl: data.original_url})
+    if (!loading && data && !tracked.current) {
+      tracked.current = true
+      storeClicks({ id: data.id, originalUrl: data.original_url })
     }
-  }, [loading, data, isLoading])
-  
-  // if(loading || loadingStats)
-  if(loading || isLoading)
+  }, [loading, data])
+
   return (
     <>
-      <BarLoader width={"100%"} color="#36d7b7" />
+      <BarLoader width="100%" color="#36d7b7" />
       <br />
-      Redirecting
+      Redirecting...
     </>
   )
-
-  return null
 }
 
 export default Redirect
